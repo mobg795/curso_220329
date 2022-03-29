@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  web:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - "4000:3000"  
+    volumes:
+      - ./app:/work
+    environment:
+      - MONGO_IP=db
+
+    command: ["./wait-for-it.sh", "db:27017", "--", "nodemon", "/work/server.js"]
+
+  db:
+    image: mongo:5.0.6
